@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test DevRev Widget - SecureTrip</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .status { margin: 10px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid #007bff; }
+    </style>
+</head>
+<body>
+    <h1>DevRev Widget Test Page</h1>
+    
+    <div class="test-section">
+        <h2>User Status</h2>
+        <div id="user-status" class="status">Checking user status...</div>
+        <button onclick="checkUserStatus()">Check User Status</button>
+        <button onclick="simulateLogin()">Simulate Login</button>
+        <button onclick="clearUser()">Clear User (Logout)</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Plug SDK Status</h2>
+        <div id="sdk-status" class="status">Checking SDK status...</div>
+        <button onclick="checkSDKStatus()">Check SDK Status</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Console Logs</h2>
+        <div id="console-logs" class="status">Check browser console for detailed logs...</div>
+        <button onclick="clearConsole()">Clear Console</button>
+    </div>
+
+    <!-- DevRev Plug SDK -->
+    <script type="text/javascript" src="https://plug-platform.devrev.ai/static/plug.js"></script>
+    <script src="https://static.plug.devrev.ai/plug-latest.min.js"></script>
+    <script src="assets/js/plug-init.js"></script>
+    
+    <script>
+        function checkUserStatus() {
+            const savedUser = localStorage.getItem('securetrip_user');
+            const statusDiv = document.getElementById('user-status');
+            
+            if (savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    statusDiv.innerHTML = `✅ User logged in: ${user.name} (${user.email})`;
+                    statusDiv.style.borderLeftColor = '#28a745';
+                } catch (e) {
+                    statusDiv.innerHTML = `❌ Invalid user data in localStorage`;
+                    statusDiv.style.borderLeftColor = '#dc3545';
+                }
+            } else {
+                statusDiv.innerHTML = `❌ No user logged in`;
+                statusDiv.style.borderLeftColor = '#dc3545';
+            }
+        }
+        
+        function simulateLogin() {
+            const testUser = {
+                name: "Test User",
+                email: "test@example.com"
+            };
+            localStorage.setItem('securetrip_user', JSON.stringify(testUser));
+            statusDiv.innerHTML = `✅ Simulated login: ${testUser.name} (${testUser.email})`;
+            statusDiv.style.borderLeftColor = '#28a745';
+            
+            // Reload the page to trigger widget initialization
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+        
+        function clearUser() {
+            localStorage.removeItem('securetrip_user');
+            document.getElementById('user-status').innerHTML = `❌ User logged out`;
+            document.getElementById('user-status').style.borderLeftColor = '#dc3545';
+            
+            // Reload the page
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+        
+        function checkSDKStatus() {
+            const statusDiv = document.getElementById('sdk-status');
+            
+            if (window.plugSDK) {
+                if (window.plugSDK.isInitialized && window.plugSDK.isInitialized()) {
+                    statusDiv.innerHTML = `✅ Plug SDK is initialized and running`;
+                    statusDiv.style.borderLeftColor = '#28a745';
+                } else {
+                    statusDiv.innerHTML = `⚠️ Plug SDK loaded but not initialized`;
+                    statusDiv.style.borderLeftColor = '#ffc107';
+                }
+            } else {
+                statusDiv.innerHTML = `❌ Plug SDK not loaded`;
+                statusDiv.style.borderLeftColor = '#dc3545';
+            }
+        }
+        
+        function clearConsole() {
+            console.clear();
+            document.getElementById('console-logs').innerHTML = 'Console cleared. Check browser console for new logs.';
+        }
+        
+        // Initial checks
+        window.addEventListener('load', () => {
+            checkUserStatus();
+            checkSDKStatus();
+        });
+        
+        // Override console.log to show logs on page
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const logsDiv = document.getElementById('console-logs');
+            logsDiv.innerHTML += '<br>' + args.join(' ');
+        };
+    </script>
+</body>
+</html>

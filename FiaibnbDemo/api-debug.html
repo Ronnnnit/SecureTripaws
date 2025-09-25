@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Debug Console - SecureTrip</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/api-debug.css">
+</head>
+<body>
+    <!-- DevRev Plug SDK -->
+    <script type="text/javascript" src="https://plug-platform.devrev.ai/static/plug.js"></script>
+    <script src="https://static.plug.devrev.ai/plug-latest.min.js"></script>
+    <script src="assets/js/plug-init.js"></script>
+    
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h2>SecureTrip</h2>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="packages.html" class="nav-link">Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="history.html" class="nav-link">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cart.html" class="nav-link">Cart <span id="cart-count" class="cart-count">0</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="api-debug.html" class="nav-link active">API Debug</a>
+                    </li>
+                    <li class="nav-item auth-section" id="auth-section">
+                        <a href="signin.html" class="nav-link" id="auth-link">Sign In</a>
+                    </li>
+                </ul>
+                <div class="nav-toggle" id="nav-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="debug-main">
+        <div class="container">
+            <div class="debug-header">
+                <h1>API Debug Console</h1>
+                <p>Real-time monitoring of all API requests and responses</p>
+                <div class="debug-controls">
+                    <button id="clear-logs-btn" class="btn btn-danger">Clear Logs</button>
+                    <button id="pause-logs-btn" class="btn btn-secondary">Pause</button>
+                    <button id="resume-logs-btn" class="btn btn-success" style="display: none;">Resume</button>
+                    <div class="status-indicator">
+                        <span class="status-dot" id="status-dot"></span>
+                        <span id="status-text">Connected</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="debug-stats">
+                <div class="stat-card">
+                    <h3 id="total-requests">0</h3>
+                    <p>Total Requests</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="success-rate">0%</h3>
+                    <p>Success Rate</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="avg-response-time">0ms</h3>
+                    <p>Avg Response Time</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="error-count">0</h3>
+                    <p>Errors</p>
+                </div>
+            </div>
+
+            <div class="debug-console">
+                <div class="console-header">
+                    <h3>API Activity Log</h3>
+                    <div class="console-controls">
+                        <label>
+                            <input type="checkbox" id="auto-scroll" checked> Auto-scroll
+                        </label>
+                        <label>
+                            <input type="checkbox" id="show-success" checked> Show Success
+                        </label>
+                        <label>
+                            <input type="checkbox" id="show-errors" checked> Show Errors
+                        </label>
+                    </div>
+                </div>
+                <div class="console-content" id="console-content">
+                    <div class="console-message info">
+                        <span class="timestamp">[System]</span>
+                        <span class="message">API Debug Console initialized. Waiting for requests...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SecureTrip</h3>
+                    <p>Your gateway to amazing travel experiences around the world.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="packages.html">Browse Packages</a></li>
+                        <li><a href="cart.html">Your Cart</a></li>
+                        <li><a href="history.html">Booking History</a></li>
+                        <li><a href="signin.html">Sign In / Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Destinations</h4>
+                    <ul>
+                        <li><a href="#">Asia</a></li>
+                        <li><a href="#">Europe</a></li>
+                        <li><a href="#">Americas</a></li>
+                        <li><a href="#">Africa</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li>📧 info@securetrip.com</li>
+                        <li>📞 +91 98765 43210</li>
+                        <li>📍 Mumbai, India</li>
+                        <li>⏰ 24/7 Customer Support</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 SecureTrip. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Help Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/api-debug.js"></script>
+</body>
+</html>
